@@ -1,0 +1,23 @@
+# PlatformIO and VS Code
+.pio/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# KiCad backups and local files
+*-backups/
+.history/
+fp-info-cache
+*.kicad_prl
+*.lck
+_autosave-*
+
+# Office files
+*.docx
+~$*
+
+# OS files
+Thumbs.db
+.DS_Store

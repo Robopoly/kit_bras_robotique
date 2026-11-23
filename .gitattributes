@@ -1,0 +1,11 @@
+# Normalize line endings of text files
+* text=auto
+*.bat text eol=crlf
+
+# Files kept byte for byte
+*.zip binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.[sS][tT][lL] binary
+*.[sS][tT][eE][pP] binary
