@@ -1,6 +1,6 @@
 /*
  * Manette Kit JIG - Version "Bras Robotique" (sans écran)
- * Contrôle uniquement le bras robotique (projet Robot_Arm_ESP32) via ESP-NOW.
+ * Contrôle uniquement le bras robotique (projet firmware/arm) via ESP-NOW.
  * Aucun jeu, aucun écran OLED requis : les infos passent par le moniteur série.
  */
 
@@ -9,7 +9,7 @@
 
 // ========== CONFIGURATION ==========
 
-// Broches joysticks (identiques à Kit_JIG_controller_test)
+// Broches joysticks (identiques à firmware/controller_console)
 #define JOY1_V_PIN   1  // Joystick 1 vertical   -> Servo 2 (Épaule)
 #define JOY1_H_PIN   2  // Joystick 1 horizontal -> Servo 1 (Base)
 #define JOY2_V_PIN   3  // Joystick 2 vertical   -> Servo 3 (Coude)
@@ -35,18 +35,18 @@ const unsigned long STATUS_PRINT_RATE = 1000;
 // La valeur ci-dessous est celle du bras du créateur : avec elle, votre bras
 // ne bougera PAS.
 //
-// Pour la trouver : flasher le bras (projet Robot_Arm_ESP32), ouvrir le moniteur
+// Pour la trouver : flasher le bras (projet firmware/arm), ouvrir le moniteur
 // série à 115200 bauds et lire la ligne "MAC du bras: XX:XX:XX:XX:XX:XX".
 // Exemple : FC:01:2C:08:FC:9C -> {0xFC, 0x01, 0x2C, 0x08, 0xFC, 0x9C}
 //
 // La MAC de CETTE manette s'affiche au démarrage ("MAC de la manette: ...") :
-// elle doit être recopiée dans controllerMAC de Robot_Arm_ESP32/src/main.cpp.
+// elle doit être recopiée dans controllerMAC de firmware/arm/src/main.cpp.
 // Voir le README pour la procédure complète.
 // ============================================================================
 uint8_t robotArmMAC[6] = {0xFC, 0x01, 0x2C, 0x08, 0xFC, 0x9C}; // -> À REMPLACER
 
 // ========== STRUCTURES DE DONNÉES ==========
-// /!\ Doivent rester IDENTIQUES à celles de Robot_Arm_ESP32/src/main.cpp
+// /!\ Doivent rester IDENTIQUES à celles de firmware/arm/src/main.cpp
 
 struct RobotCommand {
   uint8_t servo1;

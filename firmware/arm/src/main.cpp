@@ -74,9 +74,9 @@ const int MAX_MOVEMENT_SPEED = 3;
 // n'enverra pas son statut à votre manette ("Conn: NONE" / "Bras: NONE").
 //
 // Pour la trouver : flasher la manette, ouvrir le moniteur série à 115200 bauds :
-//  - avec écran (Kit_JIG_controller_test) : lancer "ROBOT CONTROL" dans le menu
+//  - avec écran (firmware/controller_console) : lancer "ROBOT CONTROL" dans le menu
 //    et lire la ligne "MAC Address: XX:XX:XX:XX:XX:XX" ;
-//  - sans écran (Kit_JIG_robot_arm_controller) : appuyer sur RESET et lire
+//  - sans écran (firmware/controller_basic) : appuyer sur RESET et lire
 //    la ligne "MAC de la manette: XX:XX:XX:XX:XX:XX".
 // Exemple : 98:88:E0:A7:6F:9C -> {0x98, 0x88, 0xE0, 0xA7, 0x6F, 0x9C}
 // Voir le README pour la procédure complète.

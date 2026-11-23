@@ -4,9 +4,9 @@
 **Made for:** EPFL Robopoly kits
 **License:** MIT (see [LICENSE](LICENSE))
 
-Firmware for the **JIG handheld controller**, built around an ESP32-S3, a 128×64 OLED screen and two analog joysticks. At power-up it shows a menu of mini-games. It can also drive the companion **robot arm** (folder `Robot_Arm_ESP32`) over ESP-NOW, a direct ESP32-to-ESP32 radio link that doesn't need a WiFi network.
+Firmware for the **JIG handheld controller**, built around an ESP32-S3, a 128×64 OLED screen and two analog joysticks. At power-up it shows a menu of mini-games. It can also drive the companion **robot arm** (folder `firmware/arm`) over ESP-NOW, a direct ESP32-to-ESP32 radio link that doesn't need a WiFi network.
 
-> **No screen?** This firmware needs the Game extension (OLED screen). For a controller PCB without it, use `Kit_JIG_robot_arm_controller` instead: it does robot arm control only.
+> **No screen?** This firmware needs the Game extension (OLED screen). For a controller PCB without it, use `firmware/controller_basic` instead: it does robot arm control only.
 
 ---
 
@@ -18,7 +18,7 @@ Firmware for the **JIG handheld controller**, built around an ESP32-S3, a 128×6
 | 2 | SPACE INVADERS | Classic shoot-'em-up |
 | 3 | PAC-MAN | Maze game with ghosts |
 | 4 | SNAKE | Classic snake |
-| 5 | ROBOT CONTROL | Remote control of the 5-servo robot arm (`Robot_Arm_ESP32`) |
+| 5 | ROBOT CONTROL | Remote control of the 5-servo robot arm (`firmware/arm`) |
 | 6 | DOOM | 3D raycaster: solo mode (random levels) or **deathmatch between two controllers** |
 | 7 | DOOM (Ecran) | Turns the controller into a gamepad for a Waveshare ESP32-S3-Touch-LCD-2.8C screen (the screen's firmware is **not** included here) |
 
@@ -45,7 +45,7 @@ The screen is rotated 180° in software (`display.setRotation(2)` in `src/common
 ## Software setup
 
 1. Install **[VS Code](https://code.visualstudio.com/)** and the **PlatformIO IDE** extension.
-2. In PlatformIO, choose **Open Project** and select this folder (`Kit_JIG_controller_test`).
+2. In PlatformIO, choose **Open Project** and select this folder (`firmware/controller_console`).
 3. On the first build, PlatformIO downloads the ESP32 toolchain and the libraries (Adafruit GFX and Adafruit SSD1306). This can take a few minutes.
 4. Connect the controller over USB, then click **Upload** (→ arrow in the bottom bar).
 5. Open the **Serial Monitor** (plug icon). The speed is already set to **115200 baud** in `platformio.ini`.
@@ -59,12 +59,12 @@ Board: `esp32-s3-devkitm-1` · Framework: Arduino.
 The controller and the robot arm talk directly to each other, and each one needs the **MAC address** (the unique hardware ID) of the other. The addresses in the code are the creator's boards, so **you must replace them with yours**. Otherwise the arm won't respond.
 
 ### Step 1: Read the arm's MAC
-1. Open the `Robot_Arm_ESP32` project and upload it to the arm's ESP32.
+1. Open the `firmware/arm` project and upload it to the arm's ESP32.
 2. Open the Serial Monitor (115200 baud) and press the board's **RESET** button.
 3. Write down the line `MAC du bras: XX:XX:XX:XX:XX:XX`.
 
 ### Step 2: Read the controller's MAC
-1. Upload this project (`Kit_JIG_controller_test`) to the controller.
+1. Upload this project (`firmware/controller_console`) to the controller.
 2. Open the Serial Monitor (115200 baud) and launch **5. ROBOT CONTROL** from the menu.
 3. Write down the line `MAC Address: XX:XX:XX:XX:XX:XX`.
 
@@ -77,8 +77,8 @@ FC:01:2C:08:FC:9C   →   {0xFC, 0x01, 0x2C, 0x08, 0xFC, 0x9C}
 
 | File | Variable | Put the MAC of… |
 |---|---|---|
-| `Kit_JIG_controller_test/src/robot/robot_comm.cpp` | `robotArmMAC` | the **arm** (step 1) |
-| `Robot_Arm_ESP32/src/main.cpp` | `controllerMAC` | the **controller** (step 2) |
+| `firmware/controller_console/src/robot/robot_comm.cpp` | `robotArmMAC` | the **arm** (step 1) |
+| `firmware/arm/src/main.cpp` | `controllerMAC` | the **controller** (step 2) |
 
 Both lines are marked `-> À REMPLACER` in the code. **Re-upload both projects** after editing them.
 
@@ -111,27 +111,26 @@ Multiplayer modes **don't need any MAC configuration**. Each controller broadcas
 ## Project structure
 
 ```
-Kit_JIG_controller_test/
+controller_console/
 ├── platformio.ini          PlatformIO configuration (board, libraries, serial speed)
-├── src/
-│   ├── main.cpp            Main loop: dispatches between menu, games and robot control
-│   ├── common/             Pin definitions, OLED and joystick initialisation
-│   ├── menu/               Main menu (navigation, battery display)
-│   ├── games/              Pong, Space Invaders, Pac-Man, Snake, DOOM, DOOM controller
-│   └── robot/              ESP-NOW protocol (robot_comm) and robot arm control (robot_control)
-└── python_simulator/       Space Invaders simulator for PC (Python + pygame)
+└── src/
+    ├── main.cpp            Main loop: dispatches between menu, games and robot control
+    ├── common/             Pin definitions, OLED and joystick initialisation
+    ├── menu/               Main menu (navigation, battery display)
+    ├── games/              Pong, Space Invaders, Pac-Man, Snake, DOOM, DOOM controller
+    └── robot/              ESP-NOW protocol (robot_comm) and robot arm control (robot_control)
 ```
 
 ### Python simulator
-`python_simulator/` lets you try Space Invaders on a PC without the hardware:
+`tools/space_invaders_simulator/` lets you try Space Invaders on a PC without the hardware. From the root of the repository:
 
 ```bash
-cd python_simulator
+cd tools/space_invaders_simulator
 pip install pygame
 python space_invaders_simulator.py
 ```
 
-See [python_simulator/README.md](python_simulator/README.md) for details (in French).
+See [tools/space_invaders_simulator/README.md](../../tools/space_invaders_simulator/README.md) for details (in French).
 
 ---
 

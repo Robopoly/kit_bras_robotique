@@ -4,11 +4,11 @@
 **Made for:** EPFL Robopoly kits
 **License:** MIT (see [LICENSE](LICENSE))
 
-Firmware for the **JIG controller PCB without the "Game" extension**, meaning no OLED screen. It does just one thing: control the 5-servo **robot arm** (folder `Robot_Arm_ESP32`) with the two joysticks over ESP-NOW, a direct ESP32-to-ESP32 radio link that doesn't need a WiFi network.
+Firmware for the **JIG controller PCB without the "Game" extension**, meaning no OLED screen. It does just one thing: control the 5-servo **robot arm** (folder `firmware/arm`) with the two joysticks over ESP-NOW, a direct ESP32-to-ESP32 radio link that doesn't need a WiFi network.
 
 It starts as soon as the controller is powered on. There's no menu and no games. All information (MAC address, connection state, angles) is shown in the **Serial Monitor**.
 
-> If you have the Game extension (OLED screen), use `Kit_JIG_controller_test` instead. It includes this same robot control as menu entry **5. ROBOT CONTROL**, plus the games.
+> If you have the Game extension (OLED screen), use `firmware/controller_console` instead. It includes this same robot control as menu entry **5. ROBOT CONTROL**, plus the games.
 
 ---
 
@@ -37,14 +37,14 @@ The further you push a joystick, the faster the servo turns.
 | Joystick 2 – vertical / horizontal / button | 3 / 4 / 6 |
 | Vibration motors (held OFF) | 17, 18 |
 
-These pins are the same as in `Kit_JIG_controller_test`, so you can switch between the two firmwares on the same PCB at any time.
+These pins are the same as in `firmware/controller_console`, so you can switch between the two firmwares on the same PCB at any time.
 
 ---
 
 ## Software setup
 
 1. Install **[VS Code](https://code.visualstudio.com/)** and the **PlatformIO IDE** extension.
-2. In PlatformIO, choose **Open Project** and select this folder (`Kit_JIG_robot_arm_controller`).
+2. In PlatformIO, choose **Open Project** and select this folder (`firmware/controller_basic`).
 3. Connect the controller over USB, then click **Upload** (→ arrow in the bottom bar).
 4. Open the **Serial Monitor** (plug icon). The speed is already set to **115200 baud** in `platformio.ini`.
 
@@ -57,7 +57,7 @@ Board: `esp32-s3-devkitm-1` · Framework: Arduino · No external library needed.
 The controller and the arm each need the **MAC address** (the unique hardware ID) of the other. The addresses in the code are the creator's boards, so **you must replace them with yours**. Otherwise the arm won't respond.
 
 ### Step 1: Read the arm's MAC
-1. Open the `Robot_Arm_ESP32` project and upload it to the arm's ESP32.
+1. Open the `firmware/arm` project and upload it to the arm's ESP32.
 2. Open the Serial Monitor (115200 baud) and press the board's **RESET** button.
 3. Write down the line `MAC du bras: XX:XX:XX:XX:XX:XX`.
 
@@ -75,12 +75,12 @@ FC:01:2C:08:FC:9C   →   {0xFC, 0x01, 0x2C, 0x08, 0xFC, 0x9C}
 
 | File | Variable | Put the MAC of… |
 |---|---|---|
-| `Kit_JIG_robot_arm_controller/src/main.cpp` | `robotArmMAC` | the **arm** (step 1) |
-| `Robot_Arm_ESP32/src/main.cpp` | `controllerMAC` | the **controller** (step 2) |
+| `firmware/controller_basic/src/main.cpp` | `robotArmMAC` | the **arm** (step 1) |
+| `firmware/arm/src/main.cpp` | `controllerMAC` | the **controller** (step 2) |
 
 Both lines are marked `-> À REMPLACER` in the code. **Re-upload both projects** after editing them.
 
-> The MAC belongs to the ESP32 chip, not to the firmware. If you already configured the arm for `Kit_JIG_controller_test`, the controller's MAC is the same and nothing needs to change on the arm.
+> The MAC belongs to the ESP32 chip, not to the firmware. If you already configured the arm for `firmware/controller_console`, the controller's MAC is the same and nothing needs to change on the arm.
 
 ### Step 4: Check
 With both boards powered on, the controller's Serial Monitor shows:
@@ -95,7 +95,7 @@ The arm's status LED turns **off** as soon as it receives commands.
 | Symptom | Likely cause |
 |---|---|
 | The arm doesn't move, its LED stays on | Wrong `robotArmMAC` in this project |
-| The arm moves, but the Serial Monitor shows `Bras: NONE` | Wrong `controllerMAC` in `Robot_Arm_ESP32` |
+| The arm moves, but the Serial Monitor shows `Bras: NONE` | Wrong `controllerMAC` in `firmware/arm` |
 | `ERREUR: Ajout peer bras` at boot | Malformed MAC (it must be exactly 6 bytes) |
 | A servo drifts on its own without touching the joysticks | A joystick was pushed at startup: press RESET without touching it |
 | Unreadable characters in the Serial Monitor | Wrong speed: select 115200 baud |
@@ -107,14 +107,14 @@ The arm's status LED turns **off** as soon as it receives commands.
 - Every 50 ms the controller reads the joysticks and updates the 5 target angles. It sends them to the arm whenever they change, and at least every 200 ms otherwise.
 - That regular sending matters: if the arm receives nothing for 2 seconds, it goes into **safety mode** (LED on, slow return to 90°).
 - The arm replies with a status message every 100 ms. If none arrives for 1 second, the controller reports `Bras DÉCONNECTÉ`.
-- The `RobotCommand` and `RobotStatus` structures in `main.cpp` must stay **identical** to the ones in `Robot_Arm_ESP32/src/main.cpp`.
+- The `RobotCommand` and `RobotStatus` structures in `main.cpp` must stay **identical** to the ones in `firmware/arm/src/main.cpp`.
 
 ---
 
 ## Project structure
 
 ```
-Kit_JIG_robot_arm_controller/
+controller_basic/
 ├── platformio.ini     PlatformIO configuration (board, serial speed)
 └── src/
     └── main.cpp       All of the firmware: joysticks, ESP-NOW, connection monitoring

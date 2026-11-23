@@ -5,13 +5,13 @@
 // Les valeurs ci-dessous sont celles des cartes du créateur : avec elles,
 // le mode ROBOT CONTROL ne trouvera PAS votre bras.
 //
-// robotArmMAC : MAC du bras robotique (projet Robot_Arm_ESP32).
+// robotArmMAC : MAC du bras robotique (projet firmware/arm).
 //   Pour la trouver : flasher le bras, ouvrir le moniteur série à 115200 bauds
 //   et lire la ligne "MAC du bras: XX:XX:XX:XX:XX:XX" affichée au démarrage.
 //   Exemple : FC:01:2C:08:FC:9C -> {0xFC, 0x01, 0x2C, 0x08, 0xFC, 0x9C}
 //
 // controllerMAC : MAC de cette manette. Non utilisée par la manette elle-même,
-//   elle doit être recopiée dans controllerMAC de Robot_Arm_ESP32/src/main.cpp.
+//   elle doit être recopiée dans controllerMAC de firmware/arm/src/main.cpp.
 //   Voir le README pour la procédure complète.
 // ============================================================================
 uint8_t robotArmMAC[6] = {0xFC, 0x01, 0x2C, 0x08, 0xFC, 0x9C}; // MAC du bras  -> À REMPLACER

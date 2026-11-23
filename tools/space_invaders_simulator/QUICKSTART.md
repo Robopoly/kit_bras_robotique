@@ -23,7 +23,7 @@ python demo.py
 
 ### Option 3: Depuis le répertoire parent
 ```bash
-python python_simulator\space_invaders_simulator.py
+python space_invaders_simulator\space_invaders_simulator.py
 ```
 
 ## Résolution de problèmes
@@ -36,7 +36,7 @@ pip install pygame
 ### Erreur de chemin
 Assurez-vous d'être dans le bon répertoire :
 ```bash
-cd python_simulator
+cd tools/space_invaders_simulator
 python space_invaders_simulator.py
 ```
 

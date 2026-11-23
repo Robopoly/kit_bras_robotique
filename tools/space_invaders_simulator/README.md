@@ -11,7 +11,7 @@ Ce simulateur Python vous permet de tester votre jeu Space Invaders sur PC avant
 ### Installation des dépendances
 
 ```bash
-# Dans le dossier python_simulator
+# Dans le dossier tools/space_invaders_simulator
 pip install -r requirements.txt
 ```
 
@@ -84,7 +84,7 @@ INVADERS_COLS = 8
 
 ### Structure du code
 ```
-python_simulator/
+space_invaders_simulator/
 ├── space_invaders_simulator.py  # Fichier principal
 ├── requirements.txt             # Dépendances Python
 └── README.md                   # Ce fichier
