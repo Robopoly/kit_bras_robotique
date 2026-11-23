@@ -5949,16 +5949,6 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "ATTENTION: NE PAS BRANCHER USB-C+CABLE EN MEME TEMPS"
-		(exclude_from_sim no)
-		(at 213.868 105.41 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "29e48d72-fa2f-43be-800e-158e28c345e9")
-	)
 	(text_box "USB-C\n"
 		(exclude_from_sim no)
 		(at 17.78 17.78 0)
